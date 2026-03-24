@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import trading.core.execution.ExecutionHandler;
 
 class ExecutionHandlerTest {
 

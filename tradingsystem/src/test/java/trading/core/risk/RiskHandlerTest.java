@@ -2,6 +2,7 @@ package trading.core.risk;
 
 import org.junit.jupiter.api.Test;
 import trading.core.event.TickEvent;
+import trading.core.risk.RiskHandlerTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,7 +12,7 @@ class RiskHandlerTest {
 
     @Test
     void acceptsValidTightSpreadTick() {
-        RiskHandler handler = new RiskHandler();
+        trading.core.risk.RiskHandler handler = new RiskHandler();
         TickEvent tick = new TickEvent();
         tick.bid = 100.0;
         tick.ask = 101.0;

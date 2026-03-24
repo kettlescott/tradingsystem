@@ -7,10 +7,16 @@ import trading.core.event.TickEvent;
 import trading.core.event.TickEventFactory;
 import trading.core.execution.ExecutionHandler;
 import trading.core.gateway.OrderGateway;
+import trading.core.marketdata.JsonMarketDataSource;
+import trading.core.marketdata.JsonTickDecoder;
+import trading.core.marketdata.MarketDataSource;
+import trading.core.marketdata.SimulatedMarketDataSource;
 import trading.core.risk.RiskHandler;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -23,6 +29,7 @@ public class TradingEngine {
     private static final double ASK_BASE = 60010;
     private static final double PRICE_SPREAD_RANGE = 100;
     private static final long METRICS_INTERVAL_MS = 1_000L;
+    private static final String JSON_LINES_MODE = "json-lines";
 
     public static void main(String[] args) {
         long runSeconds = args.length > 0 ? Long.parseLong(args[0]) : 15L;
@@ -51,8 +58,9 @@ public class TradingEngine {
 
         RingBuffer<TickEvent> ringBuffer = disruptor.getRingBuffer();
         AtomicBoolean running = new AtomicBoolean(true);
+        MarketDataSource marketDataSource = createMarketDataSource(args);
 
-        Thread producerThread = new Thread(() -> produce(ringBuffer, running), "market-data-producer");
+        Thread producerThread = new Thread(() -> marketDataSource.publishTo(ringBuffer, running), "market-data-producer");
         producerThread.start();
 
         Thread metricsThread = new Thread(() -> reportMetrics(executionHandler, riskHandler, gateway, running), "metrics-reporter");
@@ -60,35 +68,32 @@ public class TradingEngine {
         metricsThread.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            stopEngine(running, producerThread, disruptor, gateway, disruptorThreads);
+            stopEngine(running, producerThread, disruptor, gateway, disruptorThreads, marketDataSource);
         }, "engine-shutdown"));
 
         sleep(runSeconds * 1_000L);
-        stopEngine(running, producerThread, disruptor, gateway, disruptorThreads);
+        stopEngine(running, producerThread, disruptor, gateway, disruptorThreads, marketDataSource);
     }
 
-    private static void produce(RingBuffer<TickEvent> ringBuffer, AtomicBoolean running) {
-
-        while (running.get()) {
-            long seq = ringBuffer.next();
+    private static MarketDataSource createMarketDataSource(String[] args) {
+        if (args.length >= 3 && JSON_LINES_MODE.equalsIgnoreCase(args[1])) {
+            Path sourcePath = Path.of(args[2]);
             try {
-                TickEvent event = ringBuffer.get(seq);
-
-                event.eventType = TickEvent.EventType.MARKET_TICK;
-                event.instrumentId = INSTRUMENT_ID;
-                event.bid = BID_BASE + ThreadLocalRandom.current().nextDouble(PRICE_SPREAD_RANGE);
-                event.ask = ASK_BASE + ThreadLocalRandom.current().nextDouble(PRICE_SPREAD_RANGE);
-                event.exchangeTsNanos = System.nanoTime();
-                event.ingestTsNanos = System.nanoTime();
-                event.sequence = seq;
-                event.riskAccepted = false;
-
-            } finally {
-                ringBuffer.publish(seq);
+                return new JsonMarketDataSource(
+                        Files.newBufferedReader(sourcePath),
+                        new JsonTickDecoder(INSTRUMENT_ID)
+                );
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Unable to open JSON market data source: " + sourcePath, e);
             }
-
-            sleep(PRODUCER_SLEEP_MS);
         }
+        return new SimulatedMarketDataSource(
+                PRODUCER_SLEEP_MS,
+                INSTRUMENT_ID,
+                BID_BASE,
+                ASK_BASE,
+                PRICE_SPREAD_RANGE
+        );
     }
 
     private static void sleep(long ms) {
@@ -124,7 +129,8 @@ public class TradingEngine {
             Thread producerThread,
             Disruptor<TickEvent> disruptor,
             OrderGateway gateway,
-            ExecutorService disruptorThreads
+            ExecutorService disruptorThreads,
+            MarketDataSource marketDataSource
     ) {
         if (!running.compareAndSet(true, false)) {
             return;
@@ -137,6 +143,7 @@ public class TradingEngine {
         }
         disruptor.shutdown();
         gateway.shutdown();
+        marketDataSource.close();
         disruptorThreads.shutdown();
     }
 
