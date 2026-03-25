@@ -1,5 +1,7 @@
 package trading.core.zerogc;
 
+import core.event.TickEvent;
+import core.zerogc.PreAllocatedTickEventPool;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +47,7 @@ class PreAllocatedTickEventPoolTest {
 
     @Test
     void resetEventClearsState() {
-        var event = new trading.core.event.TickEvent();
+        var event = new TickEvent();
         event.instrumentId = 42;
         event.bid = 123.45;
         event.ask = 124.56;

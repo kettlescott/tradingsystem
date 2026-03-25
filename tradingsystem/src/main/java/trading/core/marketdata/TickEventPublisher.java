@@ -1,6 +1,6 @@
-package trading.core.marketdata;
+package core.marketdata;
 
-import trading.core.event.TickEvent;
+import core.event.TickEvent;
 
 final class TickEventPublisher {
 

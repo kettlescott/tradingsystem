@@ -1,14 +1,14 @@
 package trading.core.execution;
 
 import org.junit.jupiter.api.Test;
-import trading.core.event.TickEvent;
-import trading.core.gateway.OrderGateway;
+import core.event.TickEvent;
+import core.gateway.OrderGateway;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import trading.core.execution.ExecutionHandler;
+import core.execution.ExecutionHandler;
 
 class ExecutionHandlerTest {
 

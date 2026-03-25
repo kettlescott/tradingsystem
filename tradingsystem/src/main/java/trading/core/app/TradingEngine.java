@@ -1,17 +1,17 @@
-package trading.core.app;
+package core.app;
 
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import trading.core.event.TickEvent;
-import trading.core.event.TickEventFactory;
-import trading.core.execution.ExecutionHandler;
-import trading.core.gateway.OrderGateway;
-import trading.core.marketdata.JsonMarketDataSource;
-import trading.core.marketdata.JsonTickDecoder;
-import trading.core.marketdata.MarketDataSource;
-import trading.core.marketdata.SimulatedMarketDataSource;
-import trading.core.risk.RiskHandler;
+import core.event.TickEvent;
+import core.event.TickEventFactory;
+import core.execution.ExecutionHandler;
+import core.gateway.OrderGateway;
+import core.marketdata.JsonMarketDataSource;
+import core.marketdata.JsonTickDecoder;
+import core.marketdata.MarketDataSource;
+import core.marketdata.SimulatedMarketDataSource;
+import core.risk.RiskHandler;
 
 import java.io.IOException;
 import java.nio.file.Files;

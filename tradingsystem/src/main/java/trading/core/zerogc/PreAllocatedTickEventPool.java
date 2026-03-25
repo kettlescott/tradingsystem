@@ -1,7 +1,6 @@
-package trading.core.zerogc;
+package core.zerogc;
 
-import com.lmax.disruptor.RingBuffer;
-import trading.core.event.TickEvent;
+import core.event.TickEvent;
 
 /**
  * Zero-GC object pool for pre-allocated TickEvent objects.

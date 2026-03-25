@@ -1,4 +1,4 @@
-package trading.core.marketdata;
+package core.marketdata;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;

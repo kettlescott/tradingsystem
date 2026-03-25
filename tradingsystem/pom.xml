@@ -80,7 +80,7 @@
     <!-- BUILD CONFIG -->
     <!-- ================================= -->
     <build>
-        <sourceDirectory>src/trading</sourceDirectory>
+        <sourceDirectory>src/main/java/trading</sourceDirectory>
         <plugins>
 
             <!-- Compiler Plugin (Java 21) -->

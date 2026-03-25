@@ -7,7 +7,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <description>Production-ready Maven project using Java 21</description>
   <build>
-    <sourceDirectory>src/trading</sourceDirectory>
+    <sourceDirectory>src/main/java/trading</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

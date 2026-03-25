@@ -3,9 +3,11 @@ package trading.core.marketdata;
 import com.lmax.disruptor.BusySpinWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import core.marketdata.JsonMarketDataSource;
+import core.marketdata.JsonTickDecoder;
 import org.junit.jupiter.api.Test;
-import trading.core.event.TickEvent;
-import trading.core.event.TickEventFactory;
+import core.event.TickEvent;
+import core.event.TickEventFactory;
 
 import java.io.BufferedReader;
 import java.io.StringReader;

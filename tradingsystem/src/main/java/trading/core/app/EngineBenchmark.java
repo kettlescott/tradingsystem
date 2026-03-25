@@ -1,4 +1,4 @@
-package trading.core.app;
+package core.app;
 
 /**
  * Tiny benchmark harness: run the engine for N seconds and print periodic metrics.

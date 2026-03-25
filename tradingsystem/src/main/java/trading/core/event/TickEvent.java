@@ -1,4 +1,4 @@
-package trading.core.event;
+package core.event;
 
 public class TickEvent {
     public EventType eventType;

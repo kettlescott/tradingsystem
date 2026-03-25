@@ -1,5 +1,6 @@
 package trading.core.marketdata;
 
+import core.marketdata.JsonTickDecoder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

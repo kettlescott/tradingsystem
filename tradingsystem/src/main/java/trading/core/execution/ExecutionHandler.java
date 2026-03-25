@@ -1,10 +1,10 @@
-package trading.core.execution;
+package core.execution;
 
 import com.lmax.disruptor.EventHandler;
 import org.HdrHistogram.Histogram;
 import org.HdrHistogram.Recorder;
-import trading.core.event.TickEvent;
-import trading.core.gateway.OrderGateway;
+import core.event.TickEvent;
+import core.gateway.OrderGateway;
 
 public class ExecutionHandler implements EventHandler<TickEvent> {
 

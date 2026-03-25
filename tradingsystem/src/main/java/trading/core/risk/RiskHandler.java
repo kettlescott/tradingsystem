@@ -1,7 +1,7 @@
-package trading.core.risk;
+package core.risk;
 
 import com.lmax.disruptor.EventHandler;
-import trading.core.event.TickEvent;
+import core.event.TickEvent;
 
 import java.util.concurrent.atomic.AtomicLong;
 

@@ -43,34 +43,36 @@ public class MyExchangeDecoder {
 ```java
 package trading.core.marketdata;
 
+import core.marketdata.MarketDataSource;
+
 public class MyExchangeMarketDataSource implements MarketDataSource {
     private final MyExchangeWebSocketClient wsClient;
     private final MyExchangeDecoder decoder;
-    
+
     public MyExchangeMarketDataSource(String apiKey, String symbol) {
         this.wsClient = new MyExchangeWebSocketClient(apiKey);
         this.decoder = new MyExchangeDecoder();
     }
-    
+
     @Override
     public void publishTo(RingBuffer<TickEvent> ringBuffer, AtomicBoolean running) {
         wsClient.subscribe(symbol);
-        
+
         while (running.get()) {
             String message = wsClient.nextMessage(); // blocking call
             if (message != null) {
                 decoder.decode(message, decodedTick);
-                
+
                 long seq = ringBuffer.next();
                 try {
                     TickEvent event = ringBuffer.get(seq);
                     TickEventPublisher.populateMarketTick(
-                        event, seq,
-                        decodedTick.getInstrumentId(),
-                        decodedTick.getBid(),
-                        decodedTick.getAsk(),
-                        decodedTick.getExchangeTsNanos(),
-                        System.nanoTime()
+                            event, seq,
+                            decodedTick.getInstrumentId(),
+                            decodedTick.getBid(),
+                            decodedTick.getAsk(),
+                            decodedTick.getExchangeTsNanos(),
+                            System.nanoTime()
                     );
                 } finally {
                     ringBuffer.publish(seq);
@@ -78,7 +80,7 @@ public class MyExchangeMarketDataSource implements MarketDataSource {
             }
         }
     }
-    
+
     @Override
     public void close() {
         wsClient.disconnect();

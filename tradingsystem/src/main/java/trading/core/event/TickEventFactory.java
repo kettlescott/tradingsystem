@@ -1,4 +1,4 @@
-package trading.core.event;
+package core.event;
 
 import com.lmax.disruptor.EventFactory;
 

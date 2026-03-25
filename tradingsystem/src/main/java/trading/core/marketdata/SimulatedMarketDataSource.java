@@ -1,7 +1,7 @@
-package trading.core.marketdata;
+package core.marketdata;
 
 import com.lmax.disruptor.RingBuffer;
-import trading.core.event.TickEvent;
+import core.event.TickEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;

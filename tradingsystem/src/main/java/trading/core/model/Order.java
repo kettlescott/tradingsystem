@@ -1,4 +1,4 @@
-package trading.core.model;
+package core.model;
 
 public final class Order {
     public long sourceSequence;

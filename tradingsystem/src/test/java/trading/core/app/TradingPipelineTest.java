@@ -5,11 +5,11 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import org.junit.jupiter.api.Test;
-import trading.core.event.TickEvent;
-import trading.core.event.TickEventFactory;
-import trading.core.execution.ExecutionHandler;
-import trading.core.gateway.OrderGateway;
-import trading.core.risk.RiskHandler;
+import core.event.TickEvent;
+import core.event.TickEventFactory;
+import core.execution.ExecutionHandler;
+import core.gateway.OrderGateway;
+import core.risk.RiskHandler;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;

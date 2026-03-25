@@ -1,14 +1,14 @@
-package trading.core.app;
+package core.app;
 
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import trading.core.event.TickEvent;
-import trading.core.event.TickEventFactory;
-import trading.core.execution.ExecutionHandler;
-import trading.core.gateway.OrderGateway;
-import trading.core.risk.RiskHandler;
-import trading.core.zerogc.PreAllocatedTickEventPool;
+import core.event.TickEvent;
+import core.event.TickEventFactory;
+import core.execution.ExecutionHandler;
+import core.gateway.OrderGateway;
+import core.risk.RiskHandler;
+import core.zerogc.PreAllocatedTickEventPool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
